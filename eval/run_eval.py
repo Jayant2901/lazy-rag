@@ -4,7 +4,8 @@ from tqdm import tqdm
 
 from src.retriever import Retriever
 from src.pipeline import no_rag, always_rag, lazy_rag
-from eval.metrics import exact_match, f1
+from eval.metrics import exact_match, f1, bootstrap_ci
+from eval.significance import sign_test
 
 PIPELINES = {
     "no-rag": lambda q, r, threshold: no_rag(q, r),
@@ -28,17 +29,35 @@ def main():
     retriever = Retriever(args.corpus)
     qa_set = load_jsonl(args.qa)
 
-    print(f"{'pipeline':<12} {'EM':>6} {'F1':>6} {'retrieval_rate':>15}")
+    em_scores: dict[str, list[float]] = {}
+    retrieval_rates: dict[str, float] = {}
+
+    print(f"{'pipeline':<12} {'EM':>6} {'EM 95% CI':>16} {'F1':>6} {'retrieval_rate':>15}")
     for name in args.pipelines:
         run = PIPELINES[name]
-        em_total, f1_total, retrieved_count = 0.0, 0.0, 0
+        pipeline_em, f1_total, retrieved_count = [], 0.0, 0
         for item in tqdm(qa_set, desc=name):
             result = run(item["question"], retriever, args.threshold)
-            em_total += exact_match(result.answer, item["answer"])
+            pipeline_em.append(exact_match(result.answer, item["answer"]))
             f1_total += f1(result.answer, item["answer"])
             retrieved_count += int(result.retrieved)
         n = len(qa_set)
-        print(f"{name:<12} {em_total / n:>6.3f} {f1_total / n:>6.3f} {retrieved_count / n:>15.3f}")
+        em_scores[name] = pipeline_em
+        retrieval_rates[name] = retrieved_count / n
+
+        em_point, em_lo, em_hi = bootstrap_ci(pipeline_em)
+        print(f"{name:<12} {em_point:>6.3f} {f'[{em_lo:.2f}, {em_hi:.2f}]':>16} "
+              f"{f1_total / n:>6.3f} {retrieved_count / n:>15.3f}")
+
+    if "lazy-rag" in em_scores:
+        print()
+        for baseline in ("always-rag", "no-rag"):
+            if baseline not in em_scores:
+                continue
+            result = sign_test(em_scores["lazy-rag"], em_scores[baseline])
+            print(f"lazy-rag vs {baseline}: p={result['p_value']:.3f} "
+                  f"({result['n_discordant']} discordant pairs, "
+                  f"lazy-rag won {result['a_wins']}, {baseline} won {result['b_wins']})")
 
 
 if __name__ == "__main__":

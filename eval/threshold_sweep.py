@@ -7,7 +7,7 @@ from tqdm import tqdm
 from src.retriever import Retriever
 from src.pipeline import answer_with_context, PipelineResult
 from src.confidence import answer_with_confidence
-from eval.metrics import exact_match, f1
+from eval.metrics import exact_match, f1, bootstrap_ci
 from eval.run_eval import load_jsonl
 
 
@@ -30,20 +30,26 @@ def precompute(qa_set: list[dict], retriever: Retriever, k: int = 3) -> list[Que
 
 
 def score_at_threshold(draws: list[QuestionDraws], threshold: float) -> dict:
-    em_total, f1_total, retrieved_count = 0.0, 0.0, 0
+    em_scores, f1_scores, retrieved_count = [], [], 0
     for d in draws:
         if d.confidence >= threshold:
             answer, retrieved = d.draft_answer, False
         else:
             answer, retrieved = d.rag_result.answer, True
-        em_total += exact_match(answer, d.gold_answer)
-        f1_total += f1(answer, d.gold_answer)
+        em_scores.append(exact_match(answer, d.gold_answer))
+        f1_scores.append(f1(answer, d.gold_answer))
         retrieved_count += int(retrieved)
     n = len(draws)
+    em_point, em_lo, em_hi = bootstrap_ci(em_scores)
+    f1_point, f1_lo, f1_hi = bootstrap_ci(f1_scores)
     return {
         "threshold": threshold,
-        "em": em_total / n,
-        "f1": f1_total / n,
+        "em": em_point,
+        "em_ci_low": em_lo,
+        "em_ci_high": em_hi,
+        "f1": f1_point,
+        "f1_ci_low": f1_lo,
+        "f1_ci_high": f1_hi,
         "retrieval_rate": retrieved_count / n,
     }
 

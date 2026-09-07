@@ -2,6 +2,8 @@ import re
 import string
 from collections import Counter
 
+import numpy as np
+
 
 def normalize(text: str) -> str:
     text = text.lower()
@@ -26,3 +28,19 @@ def f1(prediction: str, gold: str) -> float:
     precision = num_same / len(pred_tokens)
     recall = num_same / len(gold_tokens)
     return 2 * precision * recall / (precision + recall)
+
+
+def bootstrap_ci(
+    scores: list[float], n_boot: int = 1000, ci: float = 0.95, seed: int = 0
+) -> tuple[float, float, float]:
+    """Percentile bootstrap CI on the mean of per-question scores. Returns (point, lower, upper)."""
+    arr = np.array(scores, dtype=float)
+    if arr.size == 0:
+        return 0.0, 0.0, 0.0
+    rng = np.random.default_rng(seed)
+    resample_idx = rng.integers(0, arr.size, size=(n_boot, arr.size))
+    boot_means = arr[resample_idx].mean(axis=1)
+    alpha = (1 - ci) / 2
+    lower = float(np.percentile(boot_means, 100 * alpha))
+    upper = float(np.percentile(boot_means, 100 * (1 - alpha)))
+    return float(arr.mean()), lower, upper

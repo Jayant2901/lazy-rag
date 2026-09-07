@@ -54,12 +54,12 @@ def main():
         if not seen_titles[title]:
             continue
 
-        qa.append({"question": row["question"], "answer": answers[0]})
+        qa.append({"question": row["question"], "answer": answers[0], "gold_title": title})
 
     DATA_DIR.mkdir(exist_ok=True)
     with open(DATA_DIR / "corpus.jsonl", "w", encoding="utf-8") as f:
         for i, (title, text) in enumerate(corpus.items()):
-            f.write(json.dumps({"id": str(i), "text": f"{title}: {text}"}) + "\n")
+            f.write(json.dumps({"id": str(i), "title": title, "text": f"{title}: {text}"}) + "\n")
 
     with open(DATA_DIR / "qa.jsonl", "w", encoding="utf-8") as f:
         for item in qa:
