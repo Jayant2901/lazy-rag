@@ -1,13 +1,15 @@
-import anthropic
-from src.config import ANTHROPIC_API_KEY, GEN_MODEL
+from groq import Groq
+from src.config import GROQ_API_KEY, GEN_MODEL
 
-_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+_client = Groq(api_key=GROQ_API_KEY)
 
 
 def generate(prompt: str, max_tokens: int = 512, system: str | None = None) -> str:
-    kwargs = {"model": GEN_MODEL, "max_tokens": max_tokens,
-              "messages": [{"role": "user", "content": prompt}]}
+    messages = []
     if system:
-        kwargs["system"] = system
-    response = _client.messages.create(**kwargs)
-    return response.content[0].text.strip()
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": prompt})
+    response = _client.chat.completions.create(
+        model=GEN_MODEL, max_tokens=max_tokens, messages=messages
+    )
+    return response.choices[0].message.content.strip()

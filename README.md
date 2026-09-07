@@ -21,7 +21,7 @@ FLARE (Jiang et al.), Adaptive-RAG (Jeong et al.).
 ```
 src/
   config.py       # env/config loading
-  llm.py          # Anthropic API wrapper
+  llm.py          # Groq API wrapper
   retriever.py    # embedding index + retrieval
   confidence.py   # self-verbalized confidence trigger
   pipeline.py     # AdaptiveRAG, AlwaysRAG, NoRAG pipelines
@@ -41,7 +41,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`.
+Copy `.env.example` to `.env` and set `GROQ_API_KEY` (free at [console.groq.com](https://console.groq.com)).
 
 ## Data
 
