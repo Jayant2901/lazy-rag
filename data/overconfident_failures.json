@@ -1,0 +1,210 @@
+[
+  {
+    "question": "Who was the director of W.?",
+    "gold_answer": "Oliver Stone",
+    "model_answer_no_retrieval": "Danny Boyle",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Oliver Stone",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of Tum Bin?",
+    "gold_answer": "Anubhav Sinha",
+    "model_answer_no_retrieval": "Bimal Roy",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Anubhav Sinha",
+    "rag_correct": true
+  },
+  {
+    "question": "What is Athens the capital of?",
+    "gold_answer": "Henderson County",
+    "model_answer_no_retrieval": "Greece",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Based on the context provided, Athens is **not** a capital city. It is described as a city and the **county seat of Henderson County, Texas**.\n\nThe text notes that Athens was *named after* Athens (the capital of Greece), but it does not serve as a capital itself.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who is the father of Pannonica de Koenigswarter?",
+    "gold_answer": "Charles Rothschild",
+    "model_answer_no_retrieval": "Charles Mingus",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "The provided context does not contain the answer to the question. It identifies Pannonica de Koenigswarter as a British-born jazz patron and member of the Rothschild family, but it does not name her father.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the composer of Alessandro?",
+    "gold_answer": "George Frideric Handel",
+    "model_answer_no_retrieval": "Giuseppe Verdi",
+    "self_reported_confidence": 0.98,
+    "rag_answer": "George Frideric Handel",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the screenwriter for Meantime?",
+    "gold_answer": "Mike Leigh",
+    "model_answer_no_retrieval": "Alan Parker",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the provided context, the screenwriter for *Meantime* is not mentioned. The text states that the film was directed by Mike Leigh and lists the starring actors, but it does not identify the writer.",
+    "rag_correct": false
+  },
+  {
+    "question": "What is the religion of University of St. Thomas?",
+    "gold_answer": "Catholic Church",
+    "model_answer_no_retrieval": "Roman Catholic",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Catholic",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for Alarm?",
+    "gold_answer": "Gerard Stembridge",
+    "model_answer_no_retrieval": "John Sayles",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the provided context, the film *Alarm* (2008) was written and directed by **Gerard Stembridge**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who is the author of So Disdained?",
+    "gold_answer": "Nevil Shute",
+    "model_answer_no_retrieval": "Nnedi Okofor",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Nevil Shute",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the producer of Taxi?",
+    "gold_answer": "Jafar Panahi",
+    "model_answer_no_retrieval": "Jim Darwin",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain the answer. It mentions that Jafar Panahi directed and starred in the film, and that his niece Hana Saeidi collected the award on his behalf, but it does not list the producer.",
+    "rag_correct": false
+  },
+  {
+    "question": "What genre is Grass?",
+    "gold_answer": "documentary film",
+    "model_answer_no_retrieval": "Drama",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, *Grass: History of Marijuana* is a **documentary** film.",
+    "rag_correct": false
+  },
+  {
+    "question": "What genre is Heaven 17?",
+    "gold_answer": "synth-pop",
+    "model_answer_no_retrieval": "Electronic music (specifically synth-pop and new wave)",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the provided text, Heaven 17 is a **synth-pop** band.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who is the author of Empire and Communications?",
+    "gold_answer": "Harold Innis",
+    "model_answer_no_retrieval": "Terence McKenna",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "According to the context provided, *Empire and Communications* is a book published in 1950 by **Harold Innis**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the director of No Such Thing?",
+    "gold_answer": "Hal Hartley",
+    "model_answer_no_retrieval": "Kevin Smith",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Hal Hartley",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of The Telling?",
+    "gold_answer": "Jeff Burr",
+    "model_answer_no_retrieval": "Patty Jenkins",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, **The Telling** is directed by **Jeff Burr** and **Nicholas Carpenter**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for Hard to Be a God?",
+    "gold_answer": "Peter Fleischmann",
+    "model_answer_no_retrieval": "Alexey Shishonov (adapted from a short story by Mikhail Bulgakov)",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not mention the screenwriter for *Hard to Be a God*. It only states that the film is based on the 1964 novel of the same name by Arkady and Boris Strugatsky and was directed by Peter Fleischmann.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the composer of Nancy?",
+    "gold_answer": "Jimmy Van Heusen",
+    "model_answer_no_retrieval": "Fr\u00e9d\u00e9ric B\u00e9rat",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Jimmy Van Heusen",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of The Con?",
+    "gold_answer": "Steven Schachter",
+    "model_answer_no_retrieval": "Cyrus Nowrasteh",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Steven Schachter",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of High Season?",
+    "gold_answer": "Clare Peploe",
+    "model_answer_no_retrieval": "Damiel Szaron",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Clare Peploe",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of Cousins?",
+    "gold_answer": "Joel Schumacher",
+    "model_answer_no_retrieval": "Louis Malle",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Joel Schumacher",
+    "rag_correct": true
+  },
+  {
+    "question": "Who is the author of Fat?",
+    "gold_answer": "Rob Grant",
+    "model_answer_no_retrieval": "Eric Schluntz",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Rob Grant",
+    "rag_correct": true
+  },
+  {
+    "question": "What is Peter Murnoy's occupation?",
+    "gold_answer": "politician",
+    "model_answer_no_retrieval": "Professional mixed martial artist (fighter)",
+    "self_reported_confidence": 0.9,
+    "rag_answer": "Based on the context provided, Peter Murney (referred to as Peter Murnoy in the question) was a **nationalist politician and political activist**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for The Train?",
+    "gold_answer": "Jayarajan Rajasekharan Nair",
+    "model_answer_no_retrieval": "The primary screenwriter for the 1964 film *The Train* was Paul Gallico, who adapted his own 1955 novel of the same name. The screenplay was also credited to Steno (the Italian film director and screenwriter) for the original Italian version (*Il treno*), which was remade as the American production. However, Paul Gallico is the most commonly cited screenwriter for the well-known 1964 version.",
+    "self_reported_confidence": 0.9,
+    "rag_answer": "Based on the context provided, the film *The Train* was written and directed by Jayaraj. Therefore, Jayaraj was the screenwriter.",
+    "rag_correct": false
+  },
+  {
+    "question": "What is Philip Rosenberg's occupation?",
+    "gold_answer": "production designer",
+    "model_answer_no_retrieval": "Economist",
+    "self_reported_confidence": 0.9,
+    "rag_answer": "American production designer and art director",
+    "rag_correct": false
+  },
+  {
+    "question": "In what country is Mavjinjava?",
+    "gold_answer": "India",
+    "model_answer_no_retrieval": "Russia",
+    "self_reported_confidence": 0.85,
+    "rag_answer": "India",
+    "rag_correct": true
+  },
+  {
+    "question": "What is Deggendorf the capital of?",
+    "gold_answer": "Deggendorf",
+    "model_answer_no_retrieval": "Lower Bavaria (Niederbayern)",
+    "self_reported_confidence": 0.75,
+    "rag_answer": "Deggendorf district",
+    "rag_correct": false
+  }
+]
