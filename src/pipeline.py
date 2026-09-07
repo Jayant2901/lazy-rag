@@ -20,7 +20,7 @@ class PipelineResult:
     num_retrieved: int = 0
 
 
-def _answer_with_context(question: str, retriever: Retriever, k: int = 3) -> PipelineResult:
+def answer_with_context(question: str, retriever: Retriever, k: int = 3) -> PipelineResult:
     docs = retriever.retrieve(question, k=k)
     context = "\n\n".join(d["text"] for d in docs)
     answer = generate(RAG_PROMPT.format(context=context, question=question))
@@ -33,11 +33,11 @@ def no_rag(question: str, retriever: Retriever | None = None) -> PipelineResult:
 
 
 def always_rag(question: str, retriever: Retriever, k: int = 3) -> PipelineResult:
-    return _answer_with_context(question, retriever, k=k)
+    return answer_with_context(question, retriever, k=k)
 
 
 def lazy_rag(question: str, retriever: Retriever, threshold: float = 0.6, k: int = 3) -> PipelineResult:
     draft_answer, confidence = answer_with_confidence(question)
     if confidence >= threshold:
         return PipelineResult(answer=draft_answer, retrieved=False)
-    return _answer_with_context(question, retriever, k=k)
+    return answer_with_context(question, retriever, k=k)

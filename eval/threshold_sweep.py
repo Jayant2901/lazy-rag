@@ -1,20 +1,45 @@
 import argparse
 import json
+from dataclasses import dataclass
+
+from tqdm import tqdm
 
 from src.retriever import Retriever
-from src.pipeline import lazy_rag
+from src.pipeline import answer_with_context, PipelineResult
+from src.confidence import answer_with_confidence
 from eval.metrics import exact_match, f1
 from eval.run_eval import load_jsonl
 
 
-def run_at_threshold(qa_set: list[dict], retriever: Retriever, threshold: float) -> dict:
+@dataclass
+class QuestionDraws:
+    gold_answer: str
+    draft_answer: str
+    confidence: float
+    rag_result: PipelineResult
+
+
+def precompute(qa_set: list[dict], retriever: Retriever, k: int = 3) -> list[QuestionDraws]:
+    """One confidence draw + one RAG generation per question, reused across every threshold."""
+    draws = []
+    for item in tqdm(qa_set, desc="precompute"):
+        draft_answer, confidence = answer_with_confidence(item["question"])
+        rag_result = answer_with_context(item["question"], retriever, k=k)
+        draws.append(QuestionDraws(item["answer"], draft_answer, confidence, rag_result))
+    return draws
+
+
+def score_at_threshold(draws: list[QuestionDraws], threshold: float) -> dict:
     em_total, f1_total, retrieved_count = 0.0, 0.0, 0
-    for item in qa_set:
-        result = lazy_rag(item["question"], retriever, threshold=threshold)
-        em_total += exact_match(result.answer, item["answer"])
-        f1_total += f1(result.answer, item["answer"])
-        retrieved_count += int(result.retrieved)
-    n = len(qa_set)
+    for d in draws:
+        if d.confidence >= threshold:
+            answer, retrieved = d.draft_answer, False
+        else:
+            answer, retrieved = d.rag_result.answer, True
+        em_total += exact_match(answer, d.gold_answer)
+        f1_total += f1(answer, d.gold_answer)
+        retrieved_count += int(retrieved)
+    n = len(draws)
     return {
         "threshold": threshold,
         "em": em_total / n,
@@ -35,10 +60,12 @@ def main():
     retriever = Retriever(args.corpus)
     qa_set = load_jsonl(args.qa)
 
+    draws = precompute(qa_set, retriever)
+
     results = []
     print(f"{'threshold':>10} {'EM':>6} {'F1':>6} {'retrieval_rate':>15}")
     for threshold in thresholds:
-        row = run_at_threshold(qa_set, retriever, threshold)
+        row = score_at_threshold(draws, threshold)
         results.append(row)
         print(f"{row['threshold']:>10.2f} {row['em']:>6.3f} {row['f1']:>6.3f} {row['retrieval_rate']:>15.3f}")
 

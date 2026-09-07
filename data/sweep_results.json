@@ -1,0 +1,56 @@
+[
+  {
+    "threshold": 0.0,
+    "em": 0.225,
+    "f1": 0.22790909090909092,
+    "retrieval_rate": 0.0
+  },
+  {
+    "threshold": 0.3,
+    "em": 0.275,
+    "f1": 0.33999999999999997,
+    "retrieval_rate": 0.05
+  },
+  {
+    "threshold": 0.5,
+    "em": 0.2,
+    "f1": 0.2388305870078861,
+    "retrieval_rate": 0.1
+  },
+  {
+    "threshold": 0.6,
+    "em": 0.275,
+    "f1": 0.3037215320910973,
+    "retrieval_rate": 0.15
+  },
+  {
+    "threshold": 0.7,
+    "em": 0.2,
+    "f1": 0.2329897186147186,
+    "retrieval_rate": 0.15
+  },
+  {
+    "threshold": 0.8,
+    "em": 0.25,
+    "f1": 0.3350274483970136,
+    "retrieval_rate": 0.2
+  },
+  {
+    "threshold": 0.9,
+    "em": 0.275,
+    "f1": 0.3095890937019969,
+    "retrieval_rate": 0.225
+  },
+  {
+    "threshold": 0.95,
+    "em": 0.375,
+    "f1": 0.43977829768270943,
+    "retrieval_rate": 0.375
+  },
+  {
+    "threshold": 1.0,
+    "em": 0.45,
+    "f1": 0.5675838659925542,
+    "retrieval_rate": 0.725
+  }
+]
