@@ -10,10 +10,11 @@ _client = Groq(api_key=GROQ_API_KEY)
 
 def _retry_delay(error: groq.RateLimitError, attempt: int) -> float:
     message = str(error)
-    match = re.search(r"try again in ([\d.]+)(ms|s)", message)
+    match = re.search(r"try again in (?:(\d+)m)?([\d.]+)(ms|s)\b", message)
     if match:
-        value, unit = match.groups()
+        minutes, value, unit = match.groups()
         seconds = float(value) / 1000 if unit == "ms" else float(value)
+        seconds += float(minutes) * 60 if minutes else 0
         return max(seconds, 1.0)
     return min(2 ** attempt, 30)
 
