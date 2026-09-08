@@ -3,7 +3,7 @@ import json
 from tqdm import tqdm
 
 from src.retriever import Retriever
-from src.pipeline import no_rag, always_rag, lazy_rag
+from src.pipeline import no_rag, always_rag, lazy_rag, lazy_rag_consistency
 from eval.metrics import exact_match, f1, bootstrap_ci
 from eval.significance import sign_test
 
@@ -11,7 +11,10 @@ PIPELINES = {
     "no-rag": lambda q, r, threshold: no_rag(q, r),
     "always-rag": lambda q, r, threshold: always_rag(q, r),
     "lazy-rag": lambda q, r, threshold: lazy_rag(q, r, threshold=threshold),
+    "lazy-rag-consistency": lambda q, r, threshold: lazy_rag_consistency(q, r, threshold=threshold),
 }
+# lazy-rag-consistency samples 3x per question, so it's opt-in via --pipelines rather than run by default
+DEFAULT_PIPELINES = ["no-rag", "always-rag", "lazy-rag"]
 
 
 def load_jsonl(path: str) -> list[dict]:
@@ -23,7 +26,7 @@ def main():
     parser.add_argument("--corpus", default="data/corpus.jsonl")
     parser.add_argument("--qa", default="data/qa.jsonl")
     parser.add_argument("--threshold", type=float, default=0.6)
-    parser.add_argument("--pipelines", nargs="+", default=list(PIPELINES.keys()))
+    parser.add_argument("--pipelines", nargs="+", default=DEFAULT_PIPELINES, choices=list(PIPELINES.keys()))
     parser.add_argument("--out", default=None, help="path to write full results as JSON")
     args = parser.parse_args()
 
@@ -60,16 +63,18 @@ def main():
         }
 
     significance = {}
-    if "lazy-rag" in em_scores:
+    for variant in ("lazy-rag", "lazy-rag-consistency"):
+        if variant not in em_scores:
+            continue
         print()
         for baseline in ("always-rag", "no-rag"):
-            if baseline not in em_scores:
+            if baseline not in em_scores or baseline == variant:
                 continue
-            result = sign_test(em_scores["lazy-rag"], em_scores[baseline])
-            significance[f"lazy-rag_vs_{baseline}"] = result
-            print(f"lazy-rag vs {baseline}: p={result['p_value']:.3f} "
+            result = sign_test(em_scores[variant], em_scores[baseline])
+            significance[f"{variant}_vs_{baseline}"] = result
+            print(f"{variant} vs {baseline}: p={result['p_value']:.3f} "
                   f"({result['n_discordant']} discordant pairs, "
-                  f"lazy-rag won {result['a_wins']}, {baseline} won {result['b_wins']})")
+                  f"{variant} won {result['a_wins']}, {baseline} won {result['b_wins']})")
 
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
