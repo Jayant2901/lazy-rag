@@ -1,0 +1,50 @@
+{
+  "threshold": 0.6,
+  "n": 40,
+  "pipelines": {
+    "no-rag": {
+      "em": 0.0,
+      "em_ci_low": 0.0,
+      "em_ci_high": 0.0,
+      "f1": 0.01946124644364283,
+      "f1_ci_low": 0.005818790502015471,
+      "f1_ci_high": 0.03794669048603081,
+      "retrieval_rate": 0.0,
+      "n": 40
+    },
+    "always-rag": {
+      "em": 0.35,
+      "em_ci_low": 0.225,
+      "em_ci_high": 0.5,
+      "f1": 0.49110299295045196,
+      "f1_ci_low": 0.37243700723857065,
+      "f1_ci_high": 0.6127019613424484,
+      "retrieval_rate": 1.0,
+      "n": 40
+    },
+    "lazy-rag": {
+      "em": 0.1,
+      "em_ci_low": 0.0,
+      "em_ci_high": 0.2,
+      "f1": 0.14259416971916972,
+      "f1_ci_low": 0.04954295253357755,
+      "f1_ci_high": 0.23925328144078148,
+      "retrieval_rate": 0.175,
+      "n": 40
+    }
+  },
+  "significance": {
+    "lazy-rag_vs_always-rag": {
+      "a_wins": 2,
+      "b_wins": 12,
+      "n_discordant": 14,
+      "p_value": 0.012939453125
+    },
+    "lazy-rag_vs_no-rag": {
+      "a_wins": 4,
+      "b_wins": 0,
+      "n_discordant": 4,
+      "p_value": 0.125
+    }
+  }
+}

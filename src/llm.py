@@ -19,11 +19,8 @@ def _retry_delay(error: groq.RateLimitError, attempt: int) -> float:
     return min(2 ** attempt, 30)
 
 
-def generate(prompt: str, max_tokens: int = 512, system: str | None = None, max_retries: int = 6) -> str:
-    messages = []
-    if system:
-        messages.append({"role": "system", "content": system})
-    messages.append({"role": "user", "content": prompt})
+def generate(prompt: str, max_tokens: int = 512, max_retries: int = 6) -> str:
+    messages = [{"role": "user", "content": prompt}]
 
     for attempt in range(max_retries):
         try:

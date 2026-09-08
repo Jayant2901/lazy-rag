@@ -17,14 +17,13 @@ Answer:"""
 class PipelineResult:
     answer: str
     retrieved: bool
-    num_retrieved: int = 0
 
 
 def answer_with_context(question: str, retriever: Retriever, k: int = 3) -> PipelineResult:
     docs = retriever.retrieve(question, k=k)
     context = "\n\n".join(d["text"] for d in docs)
     answer = generate(RAG_PROMPT.format(context=context, question=question))
-    return PipelineResult(answer=answer, retrieved=True, num_retrieved=len(docs))
+    return PipelineResult(answer=answer, retrieved=True)
 
 
 def no_rag(question: str, retriever: Retriever | None = None) -> PipelineResult:
