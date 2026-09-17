@@ -12,11 +12,16 @@ def normalize(text: str) -> str:
     return " ".join(text.split())
 
 
-def exact_match(prediction: str, gold: str) -> float:
-    return float(normalize(prediction) == normalize(gold))
+def _as_list(golds: str | list[str]) -> list[str]:
+    return [golds] if isinstance(golds, str) else golds
 
 
-def f1(prediction: str, gold: str) -> float:
+def exact_match(prediction: str, golds: str | list[str]) -> float:
+    """Max EM over all accepted gold answers (PopQA gives multiple aliases per question)."""
+    return max(float(normalize(prediction) == normalize(g)) for g in _as_list(golds))
+
+
+def _f1_single(prediction: str, gold: str) -> float:
     pred_tokens = normalize(prediction).split()
     gold_tokens = normalize(gold).split()
     if not pred_tokens or not gold_tokens:
@@ -28,6 +33,11 @@ def f1(prediction: str, gold: str) -> float:
     precision = num_same / len(pred_tokens)
     recall = num_same / len(gold_tokens)
     return 2 * precision * recall / (precision + recall)
+
+
+def f1(prediction: str, golds: str | list[str]) -> float:
+    """Max F1 over all accepted gold answers (PopQA gives multiple aliases per question)."""
+    return max(_f1_single(prediction, g) for g in _as_list(golds))
 
 
 def bootstrap_ci(

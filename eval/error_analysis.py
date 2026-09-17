@@ -23,15 +23,15 @@ def main():
     for item, d in zip(qa_set, draws):
         if d.confidence < args.min_confidence:
             continue
-        if exact_match(d.draft_answer, d.gold_answer):
+        if exact_match(d.draft_answer, d.gold_answers):
             continue
         failures.append({
             "question": item["question"],
-            "gold_answer": d.gold_answer,
+            "gold_answers": d.gold_answers,
             "model_answer_no_retrieval": d.draft_answer,
             "self_reported_confidence": d.confidence,
             "rag_answer": d.rag_result.answer,
-            "rag_correct": bool(exact_match(d.rag_result.answer, d.gold_answer)),
+            "rag_correct": bool(exact_match(d.rag_result.answer, d.gold_answers)),
         })
 
     failures.sort(key=lambda x: x["self_reported_confidence"], reverse=True)
@@ -42,7 +42,7 @@ def main():
     print(f"{len(failures)} / {len(qa_set)} questions: confidence >= {args.min_confidence} but wrong\n")
     for item in failures[:10]:
         print(f"[conf={item['self_reported_confidence']:.2f}] {item['question']}")
-        print(f"  gold: {item['gold_answer']!r}  model said: {item['model_answer_no_retrieval']!r}")
+        print(f"  gold: {item['gold_answers']!r}  model said: {item['model_answer_no_retrieval']!r}")
         print(f"  with retrieval: {item['rag_answer']!r} (correct={item['rag_correct']})\n")
 
     print(f"Wrote {len(failures)} cases to {args.out}")

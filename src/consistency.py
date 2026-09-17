@@ -22,5 +22,8 @@ def consistency_score(samples: list[str]) -> tuple[str, float]:
 
 
 def answer_with_consistency(question: str, n_samples: int = 3, temperature: float = 1.0) -> tuple[str, float]:
+    # Deliberately sequential, not an oversight: Groq's free-tier rate limit is already
+    # the documented bottleneck, and firing n_samples requests concurrently would trip
+    # it harder rather than speed anything up.
     samples = [generate(question, temperature=temperature) for _ in range(n_samples)]
     return consistency_score(samples)

@@ -54,7 +54,7 @@ def main():
         if not seen_titles[title]:
             continue
 
-        qa.append({"question": row["question"], "answer": answers[0], "gold_title": title})
+        qa.append({"question": row["question"], "answers": answers, "gold_title": title})
 
     DATA_DIR.mkdir(exist_ok=True)
     with open(DATA_DIR / "corpus.jsonl", "w", encoding="utf-8") as f:

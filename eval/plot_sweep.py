@@ -29,7 +29,8 @@ def main():
 
     for i, (path, label) in enumerate(zip(args.results, labels)):
         with open(path, encoding="utf-8") as f:
-            results = json.load(f)
+            data = json.load(f)
+        results = data["results"] if isinstance(data, dict) else data
 
         color = COLORS[i % len(COLORS)]
         thresholds = [r["threshold"] for r in results]

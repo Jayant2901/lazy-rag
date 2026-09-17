@@ -1,210 +1,351 @@
 [
   {
-    "question": "Who was the director of W.?",
-    "gold_answer": "Oliver Stone",
-    "model_answer_no_retrieval": "Danny Boyle",
+    "question": "What is the religion of University of St. Thomas?",
+    "gold_answers": [
+      "Catholic Church",
+      "Roman Catholic Church",
+      "Church",
+      "Roman Apostolic Catholic Church"
+    ],
+    "model_answer_no_retrieval": "Catholic",
     "self_reported_confidence": 1.0,
-    "rag_answer": "Oliver Stone",
+    "rag_answer": "Catholic",
+    "rag_correct": false
+  },
+  {
+    "question": "What is Deggendorf the capital of?",
+    "gold_answers": [
+      "Deggendorf"
+    ],
+    "model_answer_no_retrieval": "Deggendorf is not a capital city; it is the capital of the **Deggendorf district** (Landkreis Deggendorf) in the state of Bavaria, Germany.",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Based on the context provided, Deggendorf is the capital of the **Deggendorf district** in Bavaria, Germany.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who is the author of So Disdained?",
+    "gold_answers": [
+      "Nevil Shute",
+      "Nevil Shute Norway"
+    ],
+    "model_answer_no_retrieval": "Steven Erikson",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Nevil Shute",
+    "rag_correct": true
+  },
+  {
+    "question": "What genre is Heaven 17?",
+    "gold_answers": [
+      "synth-pop",
+      "synthesizer pop",
+      "techno-pop",
+      "synthpop"
+    ],
+    "model_answer_no_retrieval": "Pop and Electronic",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "synth-pop",
     "rag_correct": true
   },
   {
     "question": "Who was the director of Tum Bin?",
-    "gold_answer": "Anubhav Sinha",
-    "model_answer_no_retrieval": "Bimal Roy",
+    "gold_answers": [
+      "Anubhav Sinha"
+    ],
+    "model_answer_no_retrieval": "I. S. Johar",
     "self_reported_confidence": 1.0,
     "rag_answer": "Anubhav Sinha",
     "rag_correct": true
   },
   {
-    "question": "What is Athens the capital of?",
-    "gold_answer": "Henderson County",
-    "model_answer_no_retrieval": "Greece",
+    "question": "What is Owando the capital of?",
+    "gold_answers": [
+      "Cuvette Department"
+    ],
+    "model_answer_no_retrieval": "Republic of the Congo",
     "self_reported_confidence": 1.0,
-    "rag_answer": "Based on the context provided, Athens is **not** a capital city. It is described as a city and the **county seat of Henderson County, Texas**.\n\nThe text notes that Athens was *named after* Athens (the capital of Greece), but it does not serve as a capital itself.",
+    "rag_answer": "Owando is the capital of Cuvette Department and of Owando District.",
     "rag_correct": false
   },
   {
-    "question": "Who is the father of Pannonica de Koenigswarter?",
-    "gold_answer": "Charles Rothschild",
-    "model_answer_no_retrieval": "Charles Mingus",
+    "question": "Who is the father of Ine?",
+    "gold_answers": [
+      "Cenred of Wessex",
+      "Cenred"
+    ],
+    "model_answer_no_retrieval": "Eadfrith",
     "self_reported_confidence": 1.0,
-    "rag_answer": "The provided context does not contain the answer to the question. It identifies Pannonica de Koenigswarter as a British-born jazz patron and member of the Rothschild family, but it does not name her father.",
+    "rag_answer": "The provided context does not contain information about Ine's father. It only mentions that his predecessor was C\u00e6dwalla of Wessex.",
     "rag_correct": false
   },
   {
-    "question": "Who was the composer of Alessandro?",
-    "gold_answer": "George Frideric Handel",
-    "model_answer_no_retrieval": "Giuseppe Verdi",
+    "question": "Who was the screenwriter for Before Midnight?",
+    "gold_answers": [
+      "Julie Delpy",
+      "Ethan Hawke",
+      "Ethan Green Hawke"
+    ],
+    "model_answer_no_retrieval": "Richard Linklater",
+    "self_reported_confidence": 1.0,
+    "rag_answer": "Richard Linklater, Ethan Hawke, and Julie Delpy",
+    "rag_correct": false
+  },
+  {
+    "question": "What is the religion of William III of England?",
+    "gold_answers": [
+      "Protestantism",
+      "Protestant religion",
+      "Protestant Church",
+      "Christian Protestantism",
+      "Protestant churches",
+      "Protestant Christianity",
+      "Protestant",
+      "Protestants"
+    ],
+    "model_answer_no_retrieval": "Christianity (specifically Protestantism/Anglicanism)",
     "self_reported_confidence": 0.98,
-    "rag_answer": "George Frideric Handel",
-    "rag_correct": true
+    "rag_answer": "The provided context does not state the religion of William III of England. While it mentions he was the sovereign Prince of Orange and a ruler in the Dutch Republic, it does not specify his religious affiliation.",
+    "rag_correct": false
   },
   {
     "question": "Who was the screenwriter for Meantime?",
-    "gold_answer": "Mike Leigh",
-    "model_answer_no_retrieval": "Alan Parker",
+    "gold_answers": [
+      "Mike Leigh"
+    ],
+    "model_answer_no_retrieval": "Stanley Donen",
     "self_reported_confidence": 0.95,
-    "rag_answer": "Based on the provided context, the screenwriter for *Meantime* is not mentioned. The text states that the film was directed by Mike Leigh and lists the starring actors, but it does not identify the writer.",
+    "rag_answer": "The provided context does not contain the name of the screenwriter for *Meantime*.",
     "rag_correct": false
-  },
-  {
-    "question": "What is the religion of University of St. Thomas?",
-    "gold_answer": "Catholic Church",
-    "model_answer_no_retrieval": "Roman Catholic",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Catholic",
-    "rag_correct": false
-  },
-  {
-    "question": "Who was the screenwriter for Alarm?",
-    "gold_answer": "Gerard Stembridge",
-    "model_answer_no_retrieval": "John Sayles",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Based on the provided context, the film *Alarm* (2008) was written and directed by **Gerard Stembridge**.",
-    "rag_correct": false
-  },
-  {
-    "question": "Who is the author of So Disdained?",
-    "gold_answer": "Nevil Shute",
-    "model_answer_no_retrieval": "Nnedi Okofor",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Nevil Shute",
-    "rag_correct": true
   },
   {
     "question": "Who was the producer of Taxi?",
-    "gold_answer": "Jafar Panahi",
-    "model_answer_no_retrieval": "Jim Darwin",
+    "gold_answers": [
+      "Jafar Panahi"
+    ],
+    "model_answer_no_retrieval": "James Burrows and Marcy Carsey",
     "self_reported_confidence": 0.95,
-    "rag_answer": "The provided context does not contain the answer. It mentions that Jafar Panahi directed and starred in the film, and that his niece Hana Saeidi collected the award on his behalf, but it does not list the producer.",
+    "rag_answer": "The provided context does not contain information about the producer of the film *Taxi*. It only mentions that the film was \"starring and directed by Jafar Panahi.\"",
     "rag_correct": false
+  },
+  {
+    "question": "Who was the director of Ji?",
+    "gold_answers": [
+      "N. Lingusamy"
+    ],
+    "model_answer_no_retrieval": "Tsai Ming-liang",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The director of Ji was N. Lingusamy.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the director of Face to Face?",
+    "gold_answers": [
+      "Michael Rymer"
+    ],
+    "model_answer_no_retrieval": "John Brahm",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The director of *Face to Face* was Michael Rymer.",
+    "rag_correct": false
+  },
+  {
+    "question": "In what city was Vera Dua born?",
+    "gold_answers": [
+      "Ghent",
+      "Gent",
+      "Gand"
+    ],
+    "model_answer_no_retrieval": "Thessaloniki",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain the answer to the question. The text provides biographical details about Vera Dua (her role in Groen!, her education, and graduation dates) and descriptions of London and Sala, Sweden, but it does not mention where Vera Dua was born.",
+    "rag_correct": false
+  },
+  {
+    "question": "What sport does Archie Needham play?",
+    "gold_answers": [
+      "association football",
+      "football",
+      "soccer"
+    ],
+    "model_answer_no_retrieval": "Australian rules football",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, Archie Needham played **football**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who is the father of Francesco Maria Farnese?",
+    "gold_answers": [
+      "Ranuccio I Farnese",
+      "Rannucio I, Duke of Parma Farnese",
+      "Duke of Parma Ranuccio I Farnese"
+    ],
+    "model_answer_no_retrieval": "Alessandro Farnese (Pope Paul III)",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain information about the father of Francesco Maria Farnese.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for Speak?",
+    "gold_answers": [
+      "Laurie Halse Anderson",
+      "Laurie Beth Halse"
+    ],
+    "model_answer_no_retrieval": "Josh Davis",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain the answer.",
+    "rag_correct": false
+  },
+  {
+    "question": "In what city was Volodymyr O. Kravets born?",
+    "gold_answers": [
+      "Cherkasy Oblast",
+      "Cherkas'ka oblast'",
+      "Cherkashchyna"
+    ],
+    "model_answer_no_retrieval": "Odesa",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain the answer to the question of in what city Volodymyr O. Kravets was born. The context only states that he was a Ukrainian diplomat who served as Permanent Representative of Ukraine to the United Nations and Minister of Foreign Affairs of the Ukrainian SSR.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the composer of Crazy?",
+    "gold_answers": [
+      "Danger Mouse",
+      "Brian Joseph Burton",
+      "Brian Burton"
+    ],
+    "model_answer_no_retrieval": "Ray Price",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not state who composed \"Crazy.\" It only identifies \"Crazy\" as the debut single of the American soul duo Gnarls Barkley, taken from their album *St. Elsewhere*.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for Exam?",
+    "gold_answers": [
+      "Stuart Hazeldine"
+    ],
+    "model_answer_no_retrieval": "Jeff Natteford",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Stuart Hazeldine",
+    "rag_correct": true
+  },
+  {
+    "question": "Who is the author of Sweet Tooth?",
+    "gold_answers": [
+      "Jeff Lemire"
+    ],
+    "model_answer_no_retrieval": "Robert Harris",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Jeff Lemire",
+    "rag_correct": true
+  },
+  {
+    "question": "Who was the director of Daddy?",
+    "gold_answers": [
+      "Mahesh Bhatt"
+    ],
+    "model_answer_no_retrieval": "Cameron Crowe",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the provided context, the 1989 television film *Daddy* was directed by **Mahesh Bhatt**.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the composer of One of These Days?",
+    "gold_answers": [
+      "David Gilmour",
+      "David Jon Gilmour",
+      "Dave Gilmour",
+      "Roger Waters",
+      "George Roger Waters",
+      "Nick Mason",
+      "Nicholas Berkeley Mason",
+      "Nicholas Berkeley \"Nick\" Mason",
+      "00042306910 IPI",
+      "00042307025 IPI"
+    ],
+    "model_answer_no_retrieval": "Paul McCartney (credited to Lennon\u2013McCartney)",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, the composition \"One of These Days\" features double-tracked bass guitars played by **David Gilmour** and **Roger Waters**. The text identifies the song as the opening track from Pink Floyd's 1971 album *Meddle*, implying the band members listed were responsible for the composition.\n\nAnswer: David Gilmour and Roger Waters",
+    "rag_correct": false
+  },
+  {
+    "question": "What genre is Simon Le Bon?",
+    "gold_answers": [
+      "pop music",
+      "pop",
+      "Pop"
+    ],
+    "model_answer_no_retrieval": "Pop rock",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, the text does not explicitly define Simon Le Bon's \"genre.\" It describes him as an **English singer** and notes that he is the lead vocalist of the **new wave band** Duran Duran. While \"new wave\" refers to the genre of his band, the text does not state a specific genre for Simon Le Bon individually.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for The Classic?",
+    "gold_answers": [
+      "Kari Hotakainen",
+      "Kari Matti Hotakainen"
+    ],
+    "model_answer_no_retrieval": "Ben Reeves",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "The provided context does not contain the answer.",
+    "rag_correct": false
+  },
+  {
+    "question": "Who was the screenwriter for Inside Out?",
+    "gold_answers": [
+      "Bill Hader",
+      "William Thomas Hader Jr.",
+      "Amy Poehler",
+      "Amy Meredith Poehler",
+      "Pete Docter",
+      "Peter Docter",
+      "Peter Hans Docter",
+      "Ronnie del Carmen",
+      "Ronaldo del Carmen",
+      "Ronaldo Del Carmen"
+    ],
+    "model_answer_no_retrieval": "Pete Docter, Meg Ray, and Josh Cooley",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Based on the context provided, the screenwriters for *Inside Out* are **Pete Docter** (who co-wrote it), **Meg LeFauve**, and **Josh Cooley**.",
+    "rag_correct": false
+  },
+  {
+    "question": "In what country is Los Santos mine?",
+    "gold_answers": [
+      "Spain",
+      "Espa\u00f1a",
+      "Kingdom of Spain",
+      "ES",
+      "ESP"
+    ],
+    "model_answer_no_retrieval": "C\u00f4te d'Ivoire",
+    "self_reported_confidence": 0.95,
+    "rag_answer": "Spain",
+    "rag_correct": true
   },
   {
     "question": "What genre is Grass?",
-    "gold_answer": "documentary film",
-    "model_answer_no_retrieval": "Drama",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Based on the context provided, *Grass: History of Marijuana* is a **documentary** film.",
-    "rag_correct": false
-  },
-  {
-    "question": "What genre is Heaven 17?",
-    "gold_answer": "synth-pop",
-    "model_answer_no_retrieval": "Electronic music (specifically synth-pop and new wave)",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Based on the provided text, Heaven 17 is a **synth-pop** band.",
-    "rag_correct": false
-  },
-  {
-    "question": "Who is the author of Empire and Communications?",
-    "gold_answer": "Harold Innis",
-    "model_answer_no_retrieval": "Terence McKenna",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "According to the context provided, *Empire and Communications* is a book published in 1950 by **Harold Innis**.",
-    "rag_correct": false
-  },
-  {
-    "question": "Who was the director of No Such Thing?",
-    "gold_answer": "Hal Hartley",
-    "model_answer_no_retrieval": "Kevin Smith",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Hal Hartley",
-    "rag_correct": true
-  },
-  {
-    "question": "Who was the director of The Telling?",
-    "gold_answer": "Jeff Burr",
-    "model_answer_no_retrieval": "Patty Jenkins",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Based on the context provided, **The Telling** is directed by **Jeff Burr** and **Nicholas Carpenter**.",
-    "rag_correct": false
-  },
-  {
-    "question": "Who was the screenwriter for Hard to Be a God?",
-    "gold_answer": "Peter Fleischmann",
-    "model_answer_no_retrieval": "Alexey Shishonov (adapted from a short story by Mikhail Bulgakov)",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "The provided context does not mention the screenwriter for *Hard to Be a God*. It only states that the film is based on the 1964 novel of the same name by Arkady and Boris Strugatsky and was directed by Peter Fleischmann.",
-    "rag_correct": false
-  },
-  {
-    "question": "Who was the composer of Nancy?",
-    "gold_answer": "Jimmy Van Heusen",
-    "model_answer_no_retrieval": "Fr\u00e9d\u00e9ric B\u00e9rat",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Jimmy Van Heusen",
-    "rag_correct": true
-  },
-  {
-    "question": "Who was the director of The Con?",
-    "gold_answer": "Steven Schachter",
-    "model_answer_no_retrieval": "Cyrus Nowrasteh",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Steven Schachter",
-    "rag_correct": true
-  },
-  {
-    "question": "Who was the director of High Season?",
-    "gold_answer": "Clare Peploe",
-    "model_answer_no_retrieval": "Damiel Szaron",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Clare Peploe",
-    "rag_correct": true
-  },
-  {
-    "question": "Who was the director of Cousins?",
-    "gold_answer": "Joel Schumacher",
-    "model_answer_no_retrieval": "Louis Malle",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Joel Schumacher",
-    "rag_correct": true
-  },
-  {
-    "question": "Who is the author of Fat?",
-    "gold_answer": "Rob Grant",
-    "model_answer_no_retrieval": "Eric Schluntz",
-    "self_reported_confidence": 0.95,
-    "rag_answer": "Rob Grant",
-    "rag_correct": true
-  },
-  {
-    "question": "What is Peter Murnoy's occupation?",
-    "gold_answer": "politician",
-    "model_answer_no_retrieval": "Professional mixed martial artist (fighter)",
+    "gold_answers": [
+      "documentary film",
+      "documentary movie",
+      "doc",
+      "film documentary",
+      "motion picture documentary",
+      "documentary",
+      "factual film"
+    ],
+    "model_answer_no_retrieval": "Drama (specifically Comedy-Drama or Literary Drama)",
     "self_reported_confidence": 0.9,
-    "rag_answer": "Based on the context provided, Peter Murney (referred to as Peter Murnoy in the question) was a **nationalist politician and political activist**.",
+    "rag_answer": "Based on the context provided, \"Grass: History of Marijuana\" is a **documentary** film.",
     "rag_correct": false
   },
   {
-    "question": "Who was the screenwriter for The Train?",
-    "gold_answer": "Jayarajan Rajasekharan Nair",
-    "model_answer_no_retrieval": "The primary screenwriter for the 1964 film *The Train* was Paul Gallico, who adapted his own 1955 novel of the same name. The screenplay was also credited to Steno (the Italian film director and screenwriter) for the original Italian version (*Il treno*), which was remade as the American production. However, Paul Gallico is the most commonly cited screenwriter for the well-known 1964 version.",
-    "self_reported_confidence": 0.9,
-    "rag_answer": "Based on the context provided, the film *The Train* was written and directed by Jayaraj. Therefore, Jayaraj was the screenwriter.",
-    "rag_correct": false
-  },
-  {
-    "question": "What is Philip Rosenberg's occupation?",
-    "gold_answer": "production designer",
-    "model_answer_no_retrieval": "Economist",
-    "self_reported_confidence": 0.9,
-    "rag_answer": "American production designer and art director",
-    "rag_correct": false
-  },
-  {
-    "question": "In what country is Mavjinjava?",
-    "gold_answer": "India",
-    "model_answer_no_retrieval": "Russia",
-    "self_reported_confidence": 0.85,
-    "rag_answer": "India",
-    "rag_correct": true
-  },
-  {
-    "question": "What is Deggendorf the capital of?",
-    "gold_answer": "Deggendorf",
-    "model_answer_no_retrieval": "Lower Bavaria (Niederbayern)",
-    "self_reported_confidence": 0.75,
-    "rag_answer": "Deggendorf district",
+    "question": "Who is the father of Rahy?",
+    "gold_answers": [
+      "Blushing Groom"
+    ],
+    "model_answer_no_retrieval": "Mercurio",
+    "self_reported_confidence": 0.8,
+    "rag_answer": "The context does not contain the answer.",
     "rag_correct": false
   }
 ]

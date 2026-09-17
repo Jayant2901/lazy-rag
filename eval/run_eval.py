@@ -2,10 +2,12 @@ import argparse
 import json
 from tqdm import tqdm
 
+from src.config import GEN_MODEL
 from src.retriever import Retriever
 from src.pipeline import no_rag, always_rag, lazy_rag, lazy_rag_consistency
 from eval.metrics import exact_match, f1, bootstrap_ci
 from eval.significance import sign_test
+from eval.provenance import provenance_metadata
 
 PIPELINES = {
     "no-rag": lambda q, r, threshold: no_rag(q, r),
@@ -44,8 +46,8 @@ def main():
         pipeline_em, pipeline_f1, retrieved_count = [], [], 0
         for item in tqdm(qa_set, desc=name):
             result = run(item["question"], retriever, args.threshold)
-            pipeline_em.append(exact_match(result.answer, item["answer"]))
-            pipeline_f1.append(f1(result.answer, item["answer"]))
+            pipeline_em.append(exact_match(result.answer, item["answers"]))
+            pipeline_f1.append(f1(result.answer, item["answers"]))
             retrieved_count += int(result.retrieved)
         n = len(qa_set)
         em_scores[name] = pipeline_em
@@ -79,6 +81,7 @@ def main():
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
             json.dump({
+                **provenance_metadata(GEN_MODEL),
                 "threshold": args.threshold,
                 "n": len(qa_set),
                 "pipelines": summary,

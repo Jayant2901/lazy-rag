@@ -4,16 +4,18 @@ from dataclasses import dataclass
 
 from tqdm import tqdm
 
+from src.config import GEN_MODEL
 from src.retriever import Retriever
 from src.pipeline import answer_with_context, PipelineResult
 from src.confidence import answer_with_confidence
 from eval.metrics import exact_match, f1, bootstrap_ci
 from eval.run_eval import load_jsonl
+from eval.provenance import provenance_metadata
 
 
 @dataclass
 class QuestionDraws:
-    gold_answer: str
+    gold_answers: list[str]
     draft_answer: str
     confidence: float
     rag_result: PipelineResult
@@ -25,7 +27,7 @@ def precompute(qa_set: list[dict], retriever: Retriever, k: int = 3) -> list[Que
     for item in tqdm(qa_set, desc="precompute"):
         draft_answer, confidence = answer_with_confidence(item["question"])
         rag_result = answer_with_context(item["question"], retriever, k=k)
-        draws.append(QuestionDraws(item["answer"], draft_answer, confidence, rag_result))
+        draws.append(QuestionDraws(item["answers"], draft_answer, confidence, rag_result))
     return draws
 
 
@@ -36,8 +38,8 @@ def score_at_threshold(draws: list[QuestionDraws], threshold: float) -> dict:
             answer, retrieved = d.draft_answer, False
         else:
             answer, retrieved = d.rag_result.answer, True
-        em_scores.append(exact_match(answer, d.gold_answer))
-        f1_scores.append(f1(answer, d.gold_answer))
+        em_scores.append(exact_match(answer, d.gold_answers))
+        f1_scores.append(f1(answer, d.gold_answers))
         retrieved_count += int(retrieved)
     n = len(draws)
     em_point, em_lo, em_hi = bootstrap_ci(em_scores)
@@ -76,7 +78,7 @@ def main():
         print(f"{row['threshold']:>10.2f} {row['em']:>6.3f} {row['f1']:>6.3f} {row['retrieval_rate']:>15.3f}")
 
     with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+        json.dump({**provenance_metadata(GEN_MODEL), "results": results}, f, indent=2)
     print(f"\nWrote sweep results to {args.out}")
 
 
