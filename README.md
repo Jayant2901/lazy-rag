@@ -128,8 +128,80 @@ underestimate before, not an overestimate.
 middle ground, but a trigger grounded in the generation itself — e.g.
 token-level output probability (FLARE-style) — would likely discriminate
 known-vs-unknown better than either self-verbalized confidence or sample
-agreement. Neither Groq free-tier model used here exposes `logprobs`, so
-that remains untested.
+agreement. Confirmed blocked, not just assumed: every text-generation model
+on this Groq account (`qwen/qwen3.8-27b`, `openai/gpt-oss-20b`,
+`openai/gpt-oss-120b`, `openai/gpt-oss-safeguard-20b`, `groq/compound`,
+`groq/compound-mini`, `allam-2-7b`) rejects `logprobs=True` with
+`` `logprobs` is not supported with this model ``, so a true FLARE-style
+trigger isn't currently testable on Groq's free tier at all.
+
+### Threshold sweep for lazy-rag-consistency
+
+`python -m eval.threshold_sweep --trigger consistency` sweeps
+lazy-rag-consistency the same way as lazy-rag above:
+
+| τ | EM | 95% CI | retrieval rate |
+|---|---|---|---|
+| 0.0–0.3 | 0.000 | [0.00, 0.00] | 0% |
+| 0.5–0.6 | 0.200 | [0.10, 0.33] | 97.5% |
+| 0.7–1.0 | 0.225 | [0.10, 0.35] | 100% |
+
+**This sweep is coarser than lazy-rag's by construction, not by finding:**
+with `n_samples=3`, sample-agreement can only take 3 values (1/3, 2/3, 1), so
+retrieval rate necessarily jumps from 0% to ~100% around τ≈0.4 instead of
+sweeping smoothly - there's no threshold that produces, say, a 30% retrieval
+rate at this sample count. Below that step, the gate never retrieves
+(all-agree-or-not-cases at low thresholds are rare); above it, it behaves
+almost exactly like always-rag. Increasing `n_samples` would give the
+threshold finer resolution, at the cost of more calls per question.
+
+## Replication on a second dataset (TriviaQA)
+
+The finding above is specific to PopQA's long-tail entities. To check
+whether it generalizes, the same 4 pipelines were run on 40 questions from
+[TriviaQA](https://huggingface.co/datasets/mandarjoshi/trivia_qa)
+(`rc.wikipedia` config) - mainstream trivia questions, not deliberately
+obscure ones. Unlike PopQA, TriviaQA ships its own evidence text and answer
+aliases, so `eval/prepare_triviaqa.py` needs no separate Wikipedia API calls;
+the retrieval corpus is the first 1500 characters of each question's linked
+Wikipedia article (`Recall@1 = Recall@3 = Recall@5 = 1.000`, i.e. the
+gold document is always retrieved - but see caveat below).
+
+| pipeline | EM | 95% CI | F1 | retrieval rate |
+|---|---|---|---|---|
+| no-rag | 0.000 | [0.00, 0.00] | 0.060 | 0% |
+| always-rag | 0.250 | [0.13, 0.38] | 0.343 | 100% |
+| lazy-rag (τ=0.6) | 0.550 | [0.40, 0.70] | 0.627 | 7.5% |
+| lazy-rag-consistency (τ=0.6) | 0.225 | [0.10, 0.35] | 0.300 | 100% |
+
+- lazy-rag vs always-rag: **p=0.004** (significant) - lazy-rag won 14 of 16
+  discordant pairs, retrieving on only 3 of 40 questions.
+- lazy-rag vs no-rag: **p<0.001** (significant) - lazy-rag won all 22
+  discordant pairs.
+- lazy-rag-consistency vs always-rag: p=1.0 (not significant) - both
+  retrieved on ~100% of questions, so differences are generation noise.
+
+**The finding reverses on this dataset.** On PopQA, self-verbalized
+confidence was a badly miscalibrated, overconfident trigger. On TriviaQA,
+the same trigger with the same threshold *significantly outperforms*
+always-rag while retrieving 15x less often. The likely explanation: TriviaQA
+questions are mainstream enough that the model's pretrained knowledge is
+usually correct, so when it reports high confidence, that confidence is
+actually informative - the opposite of PopQA's long-tail entities, where
+confident-sounding answers are frequently wrong.
+
+**Caveat - the two datasets aren't apples-to-apples.** PopQA's corpus is a
+short, targeted Wikipedia *summary* per entity; TriviaQA's here is the first
+1500 characters of the full linked article, which may not contain the
+specific fact asked even though the article itself is "correctly" retrieved
+(Recall@1=1.0 only confirms the right *document* was found, not that the
+answer is in the truncated excerpt). That's a plausible reason always-rag
+does *worse* here than on PopQA (0.250 vs 0.375) independent of any
+confidence-trigger story, and it means this replication is weaker evidence
+about retrieval quality than about the confidence trigger specifically. The
+core comparison that survives the caveat - lazy-rag's gate correctly skips
+retrieval on questions the model already knows, at a much lower cost than
+always-rag - still holds, and holds far more strongly than on PopQA.
 
 ## Project structure
 
@@ -152,6 +224,7 @@ eval/
   eval_retrieval.py             # standalone Recall@k reporter
   error_analysis.py              # finds confident-but-wrong cases
   prepare_popqa.py                # builds corpus.jsonl / qa.jsonl from PopQA + Wikipedia
+  prepare_triviaqa.py              # builds triviaqa_corpus.jsonl / triviaqa_qa.jsonl from TriviaQA
 tests/
   test_metrics.py                 # normalize/EM/F1/bootstrap_ci unit tests
   test_confidence.py               # confidence-parsing unit tests
@@ -165,12 +238,16 @@ data/
   qa.jsonl                    # full eval set (question, answers, gold_title)
   qa_subset.jsonl               # smaller subset for fast iteration under free-tier rate limits
   eval_results_n40.json          # 4-pipeline eval output (EM/F1/CI/significance)
-  sweep_results.json              # qwen threshold sweep output
-  sweep_results_gpt-oss-20b.json   # gpt-oss-20b threshold sweep output (predates the scoring fix)
-  sweep_plot_multimodel.png         # quality vs retrieval-rate chart, both models overlaid
-  overconfident_failures.json        # confidence>=0.7-but-wrong cases
-  corpus.example.jsonl                # tiny offline demo corpus (no network/HF auth needed)
-  qa.example.jsonl                     # tiny offline demo QA set
+  sweep_results.json              # qwen threshold sweep output (lazy-rag)
+  sweep_results_consistency.json   # qwen threshold sweep output (lazy-rag-consistency)
+  sweep_results_gpt-oss-20b.json    # gpt-oss-20b threshold sweep output (predates the scoring fix)
+  sweep_plot_multimodel.png          # quality vs retrieval-rate chart, both models overlaid
+  overconfident_failures.json         # confidence>=0.7-but-wrong cases
+  corpus.example.jsonl                 # tiny offline demo corpus (no network/HF auth needed)
+  qa.example.jsonl                      # tiny offline demo QA set
+  triviaqa_corpus.jsonl                  # second-dataset retrieval corpus (TriviaQA evidence text)
+  triviaqa_qa.jsonl                       # second-dataset eval set (question, answers, gold_title)
+  triviaqa_eval_results_n40.json           # 4-pipeline eval output on TriviaQA
 ```
 
 ## Setup
@@ -209,10 +286,19 @@ python -m eval.run_eval --qa data/qa_subset.jsonl \
     --pipelines no-rag always-rag lazy-rag lazy-rag-consistency \
     --out data/eval_results_n40.json
 python -m eval.threshold_sweep --qa data/qa_subset.jsonl   # sweeps thresholds, writes sweep_results.json
+python -m eval.threshold_sweep --qa data/qa_subset.jsonl --trigger consistency \
+    --out data/sweep_results_consistency.json               # same sweep, lazy-rag-consistency trigger
 python -m eval.plot_sweep --results data/sweep_results.json data/sweep_results_gpt-oss-20b.json \
     --labels qwen3.8-27b gpt-oss-20b --out data/sweep_plot_multimodel.png
 python -m eval.eval_retrieval --qa data/qa_subset.jsonl    # Recall@k
 python -m eval.error_analysis                              # finds confident-but-wrong cases
+
+# second dataset (TriviaQA), to check the finding isn't PopQA-specific
+python eval/prepare_triviaqa.py
+python -m eval.run_eval --corpus data/triviaqa_corpus.jsonl --qa data/triviaqa_qa.jsonl \
+    --pipelines no-rag always-rag lazy-rag lazy-rag-consistency \
+    --out data/triviaqa_eval_results_n40.json
+
 pytest tests/ -v                                            # unit tests (no network/API calls)
 ```
 
@@ -250,10 +336,11 @@ while still supporting bootstrap CIs and a paired significance test.
       the first one
 - [x] Self-consistency (sample-agreement) trigger as a second variant,
       evaluated and reported above
-- [ ] Threshold sweep for lazy-rag-consistency (only τ=0.6 reported so far)
+- [x] Threshold sweep for lazy-rag-consistency, reported above
+- [x] A second QA dataset beyond PopQA (TriviaQA) — the finding turned out to
+      be dataset-dependent, reported above
 - [ ] Token-level uncertainty trigger (FLARE-style) as a third variant, to
       test whether it discriminates known-vs-unknown better than either
-      self-verbalized confidence or self-consistency — blocked on a Groq
-      model that exposes `logprobs`
-- [ ] A second QA dataset beyond PopQA, to check the finding isn't specific
-      to long-tail entity questions
+      self-verbalized confidence or self-consistency — confirmed blocked:
+      no text-generation model on this Groq account exposes `logprobs`
+      (checked directly against all 7 available models)

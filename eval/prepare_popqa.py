@@ -5,6 +5,9 @@ from pathlib import Path
 
 import requests
 from datasets import load_dataset
+from dotenv import load_dotenv
+
+load_dotenv()
 
 N_SAMPLES = 150
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"

@@ -8,9 +8,15 @@ from src.config import GEN_MODEL
 from src.retriever import Retriever
 from src.pipeline import answer_with_context, PipelineResult
 from src.confidence import answer_with_confidence
+from src.consistency import answer_with_consistency
 from eval.metrics import exact_match, f1, bootstrap_ci
 from eval.run_eval import load_jsonl
 from eval.provenance import provenance_metadata
+
+TRIGGERS = {
+    "confidence": lambda question, n_samples: answer_with_confidence(question),
+    "consistency": lambda question, n_samples: answer_with_consistency(question, n_samples=n_samples),
+}
 
 
 @dataclass
@@ -21,11 +27,14 @@ class QuestionDraws:
     rag_result: PipelineResult
 
 
-def precompute(qa_set: list[dict], retriever: Retriever, k: int = 3) -> list[QuestionDraws]:
+def precompute(
+    qa_set: list[dict], retriever: Retriever, k: int = 3, trigger: str = "confidence", n_samples: int = 3
+) -> list[QuestionDraws]:
     """One confidence draw + one RAG generation per question, reused across every threshold."""
+    draw_trigger = TRIGGERS[trigger]
     draws = []
     for item in tqdm(qa_set, desc="precompute"):
-        draft_answer, confidence = answer_with_confidence(item["question"])
+        draft_answer, confidence = draw_trigger(item["question"], n_samples)
         rag_result = answer_with_context(item["question"], retriever, k=k)
         draws.append(QuestionDraws(item["answers"], draft_answer, confidence, rag_result))
     return draws
@@ -61,6 +70,9 @@ def main():
     parser.add_argument("--corpus", default="data/corpus.jsonl")
     parser.add_argument("--qa", default="data/qa_subset.jsonl")
     parser.add_argument("--thresholds", default="0.0,0.3,0.5,0.6,0.7,0.8,0.9,0.95,1.0")
+    parser.add_argument("--trigger", choices=list(TRIGGERS.keys()), default="confidence",
+                         help="confidence = self-verbalized confidence; consistency = sample agreement")
+    parser.add_argument("--n-samples", type=int, default=3, help="samples per question for --trigger consistency")
     parser.add_argument("--out", default="data/sweep_results.json")
     args = parser.parse_args()
 
@@ -68,7 +80,7 @@ def main():
     retriever = Retriever(args.corpus)
     qa_set = load_jsonl(args.qa)
 
-    draws = precompute(qa_set, retriever)
+    draws = precompute(qa_set, retriever, trigger=args.trigger, n_samples=args.n_samples)
 
     results = []
     print(f"{'threshold':>10} {'EM':>6} {'F1':>6} {'retrieval_rate':>15}")
@@ -78,7 +90,7 @@ def main():
         print(f"{row['threshold']:>10.2f} {row['em']:>6.3f} {row['f1']:>6.3f} {row['retrieval_rate']:>15.3f}")
 
     with open(args.out, "w", encoding="utf-8") as f:
-        json.dump({**provenance_metadata(GEN_MODEL), "results": results}, f, indent=2)
+        json.dump({**provenance_metadata(GEN_MODEL), "trigger": args.trigger, "results": results}, f, indent=2)
     print(f"\nWrote sweep results to {args.out}")
 
 
